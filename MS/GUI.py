@@ -19,6 +19,7 @@ class MQTTClientGUI:
         self.fillDefaults()
 
         self.client = None
+        self.anon = False
 
     def start(self):
         self.root.mainloop()
@@ -36,7 +37,7 @@ class MQTTClientGUI:
         self.sub_topic_entry.insert(0, "/mschat/all/#")
 
         self.will_topic_entry.insert(0, "/mschat/status/hab0065")
-        self.will_message_text.insert("1.0", "Jak se pripojil, tak se odpojil, nahodou")
+        self.will_message_text.insert("1.0", "offline")
 
     def create_layout(self):
         # Left side frame for all sections except chat window
@@ -218,7 +219,11 @@ class MQTTClientGUI:
 
         logging.basicConfig(level=logging.DEBUG)
 
-        self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=clientId, clean_session=cleanSession)
+        if username == "" and password == "":
+            self.anon = True
+            self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=clientId, clean_session=True)
+        else:
+            self.client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2, client_id=clientId, clean_session=cleanSession)
 
         logger = logging.getLogger(__name__)
         self.client.enable_logger(logger)
@@ -238,6 +243,8 @@ class MQTTClientGUI:
 
         self.client.loop_start()
 
+        self.client.publish("/mschat/status/hab0065", "online", 0, True)
+
         # Each user should subscribe to his own private chat
         self.client.subscribe(f"/mschat/user/{clientId}/#", 0)
 
@@ -248,6 +255,7 @@ class MQTTClientGUI:
 
         # Default unsubscribe from my private chat
         self.client.unsubscribe(f"/mschat/user/{clientId}/#")
+        self.client.publish("/mschat/status/hab0065", "offline", 0, True)
 
         self.client.will_clear()
 
@@ -270,22 +278,31 @@ class MQTTClientGUI:
         print(f"unsubscribed from {topic}")
 
     def publish_click(self):
-        topic = self.send_topic_entry.get()
+        if self.anon:
+            topic = "/mschat/all/anon"
+        else:
+            topic = self.send_topic_entry.get()
+
         qos = int(self.send_qos_dropdown.get())
         message = self.send_message_text.get("1.0", tk.END).strip()
+        retain = self.send_retain_var.get()
 
-        self.client.publish(topic, message, qos)
+        self.client.publish(topic, f"{round(datetime.now().timestamp())} {message}", qos, retain)
 
         print(f"published on {topic} with {qos} content {message}")
 
     def publish_private_click(self):
+        if self.anon:
+            return
+
         receiver = self.send_receiver_entry.get()
         sender = self.entries_middle['Client ID'].get()
         topic = f"/mschat/user/{receiver}/{sender}"
         qos = int(self.send_qos_dropdown.get())
         message = self.send_message_text.get("1.0", tk.END).strip()
+        retain = self.send_retain_var.get()
 
-        self.client.publish(topic, message, qos)
+        self.client.publish(topic, f"{round(datetime.now().timestamp())} {message}", qos, retain)
 
         print(f"private published on {topic} with {qos} content {message}")
 
@@ -300,7 +317,15 @@ class MQTTClientGUI:
 
     # MQTT on_message callback
     def on_message(self, client, userdata, message):
-        msg = f"{message.topic} - {message.payload} - {datetime.fromtimestamp(message.timestamp).isoformat()} - {message.qos}\n"
+        try:
+            timestamp, payload = message.payload.decode("utf-8").split(" ", 1)
+
+            timestamp = int(timestamp)
+        except:
+            timestamp = datetime.now().timestamp()
+            payload = message.payload.decode("utf-8")
+
+        msg = f"{message.topic} - {payload} - {datetime.fromtimestamp(timestamp).isoformat()} - {message.qos}\n"
 
         print(msg)
 
