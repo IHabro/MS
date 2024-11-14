@@ -1,0 +1,5 @@
+sudo ip addr add 172.16.1.10/24 dev eth1
+
+sudo ip r add 172.16.0.0/16 via 172.16.1.1 dev eth1
+sudo ip r add 10.10.10.10/32 via 172.16.1.1 dev eth1
+

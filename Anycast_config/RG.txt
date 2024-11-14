@@ -1,0 +1,216 @@
+!
+! Last configuration change at 15:37:18 UTC Thu Nov 14 2024
+!
+version 16.9
+service timestamps debug datetime msec
+service timestamps log datetime msec
+platform qfp utilization monitor load 80
+platform punt-keepalive disable-kernel-core
+!
+hostname RG
+!
+boot-start-marker
+boot-end-marker
+!
+!
+vrf definition Mgmt-intf
+ !
+ address-family ipv4
+ exit-address-family
+ !
+ address-family ipv6
+ exit-address-family
+!
+!
+no aaa new-model
+!
+!
+!
+!
+!
+!
+!
+!
+!
+!
+login on-success log
+!
+!
+!
+!
+!
+!
+!
+subscriber templating
+!         
+! 
+! 
+! 
+vtp mode transparent
+!
+multilink bundle-name authenticated
+!
+!
+!
+!
+!
+!
+!
+crypto pki trustpoint TP-self-signed-1217298971
+ enrollment selfsigned
+ subject-name cn=IOS-Self-Signed-Certificate-1217298971
+ revocation-check none
+ rsakeypair TP-self-signed-1217298971
+!
+!
+crypto pki certificate chain TP-self-signed-1217298971
+ certificate self-signed 01
+  30820330 30820218 A0030201 02020101 300D0609 2A864886 F70D0101 05050030 
+  31312F30 2D060355 04031326 494F532D 53656C66 2D536967 6E65642D 43657274 
+  69666963 6174652D 31323137 32393839 3731301E 170D3234 31313134 31353130 
+  34355A17 0D333030 31303130 30303030 305A3031 312F302D 06035504 03132649 
+  4F532D53 656C662D 5369676E 65642D43 65727469 66696361 74652D31 32313732 
+  39383937 31308201 22300D06 092A8648 86F70D01 01010500 0382010F 00308201 
+  0A028201 0100D6F5 72693391 70E161D3 B2234461 5DD2BF59 4ED16424 EC1AB785 
+  61DD1B1F 5C412CD1 1F185EF8 E731B280 1BB8E530 5BBF797C 92FCB3C8 E1797414 
+  D11A2D89 09AA11DF FBE50D8F D19A3632 3A708BDB 54CEC7C9 5D2C5FFD 3E2405FF 
+  29488484 2D5CF909 CDED2E04 2472478C 8663386C 00C07394 3A21574B 8093CDE3 
+  E31372C3 89A43AF5 D67D714E 8582AE69 C9F5FE5F 36D9F504 B442E4BB CB6A88C8 
+  2CF1CD69 2934F707 0DBC4422 F172AFD5 5D4B1885 B709F00E ADD4F8C2 59CFE327 
+  7AA31D83 CCB8F2D1 ED247489 7144B5D5 0B5F210C 47DFED9D 0923602D 30FD5A0A 
+  B47AF1A9 D89DD5FF D99C129A DE85D132 2D7A3F27 281707B3 879C95C1 C00023EB 
+  6B1B8044 F64B0203 010001A3 53305130 0F060355 1D130101 FF040530 030101FF 
+  301F0603 551D2304 18301680 14E53975 9E212606 5984F91D 73BA3F52 A9C604EE 
+  1D301D06 03551D0E 04160414 E539759E 21260659 84F91D73 BA3F52A9 C604EE1D 
+  300D0609 2A864886 F70D0101 05050003 82010100 8FC135EC ADB1243C 91DC85AF 
+  CF5F9A9D 32C8E41B AE9E55ED 214E0D56 DF72E23F 2B5A99E4 D367DDAE AFD59F31 
+  FFA2F690 F7DE5A4E 8D37FBE6 CE811DFD 01F81FA0 CEDFE5C6 2B0B3742 887D7B7D 
+  674EC54F 4BD582E4 8A3AC0DA 61AE3454 11EEB25B 06ABE287 CC3BEBDD BE652947 
+  D3028DF3 EA600BBB 2983F23A 464ABDFE B7DE92C3 165E1C85 F4497FAE 260C625F 
+  F4D0C513 F861C534 FECAF863 E4150CC5 82DCBC8E 8A5EF4FF C8CD086A 0FD4A62F 
+  FF4EE06C 2D54C715 29BA4AF9 42351814 4204B4AB 26153B62 D87962F3 F64F7CA6 
+  B10C3A1A 25E1492F D24870C3 D09E7272 00CA1883 D3BFB1A8 DC36E244 3EF2403C 
+  B1D52314 9F927633 E7A18E7C 537ACB89 B4B0AC36
+        quit
+!
+!
+!
+!
+!
+!
+!
+!
+license udi pid ISR4321/K9 sn FDO22272J1T
+license accept end user agreement
+license boot level appxk9
+license boot level uck9
+license boot level securityk9
+no license smart enable
+diagnostic bootup level minimal
+!
+spanning-tree extend system-id
+!
+!
+!         
+!
+redundancy
+ mode none
+!
+!
+!
+!
+!
+vlan internal allocation policy ascending
+!
+vlan 5-6,10,23,123 
+!
+vlan 666
+ name vlan666
+!
+!
+! 
+!
+!
+!
+!
+!
+!         
+!
+!
+!
+!
+! 
+! 
+!
+!
+interface GigabitEthernet0/0/0
+ ip address 172.16.0.2 255.255.255.254
+ ip ospf 1 area 0
+ negotiation auto
+!
+interface GigabitEthernet0/0/1
+ ip address 172.16.2.2 255.255.255.0
+ ip ospf 1 area 0
+ negotiation auto
+!
+interface GigabitEthernet0/1/0
+!
+interface GigabitEthernet0/1/1
+!
+interface GigabitEthernet0/1/2
+!
+interface GigabitEthernet0/1/3
+!
+interface GigabitEthernet0
+ vrf forwarding Mgmt-intf
+ no ip address
+ shutdown
+ negotiation auto
+!
+interface Vlan1
+ no ip address
+!
+router ospf 1
+ redistribute static subnets
+!
+ip forward-protocol nd
+ip http server
+ip http authentication local
+ip http secure-server
+ip tftp source-interface GigabitEthernet0
+ip route 10.10.10.10 255.255.255.255 172.16.2.20
+!
+!         
+!
+!
+!
+!
+control-plane
+!
+!
+mgcp behavior rsip-range tgcp-only
+mgcp behavior comedia-role none
+mgcp behavior comedia-check-media-src disable
+mgcp behavior comedia-sdp-force disable
+!
+mgcp profile default
+!
+!
+!
+!
+!
+!
+line con 0
+ transport input none
+ stopbits 1
+line aux 0
+ stopbits 1
+line vty 0 4
+ login
+!
+!
+!
+!
+!
+!
+end

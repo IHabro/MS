@@ -1,0 +1,4 @@
+ip add add 10.10.10.10/32 dev lo
+ip add add 172.16.2.20/24 dev eth1
+ip route add 172.16.0.0/16 via 172.16.2.2 dev eth1
+tcpdump -i eth1 icmp
