@@ -1,0 +1,4 @@
+#!/bin/bash
+ip link set $INTERFACE up
+ip address add 10.4.25.11/27 dev $INTERFACE
+ip -6 address add 2001:2::11/64 dev $INTERFACE

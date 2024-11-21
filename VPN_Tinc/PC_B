@@ -1,0 +1,11 @@
+Subnet = 10.4.25.21/32
+Subnet = 2001:2::21/128
+
+-----BEGIN RSA PUBLIC KEY-----
+MIIBCgKCAQEAqWQKhgphRrbzgYKsSFwR2Txso5vdpP/mFkPbqWz7jRK+QrSUfm5n
+vRfTlo36RzDuhjTNhOi+nfkunFEidoE/fT46V97jP0kom+jVopvDoHr6oga1d81U
+i6p6/QVyNitZ9omqdTxxSEG7GCqiHzHAhRy/f+MN3cvHsN6yq6ghwymHPr3g5j64
+9RRwBdJg/PoxeHSVgCHOJRGg3Oi48dGk80OqlCKBcu6dKin9zZkzGvL6npfAijgU
+KkzvPWwHC+VKaWV4GUzOEZtCfcjCuxMZP0jJ8Y6VS066JJKe2psG3hZuCizonfii
+bZqQvDB7LWCfXIf1JG/6jCAk5m4f7ewDYwIDAQAB
+-----END RSA PUBLIC KEY-----
